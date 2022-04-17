@@ -1,5 +1,5 @@
 # The Not-a-Blog Blog
-Technologies:
+**Technologies**:
 - HTTP server and router: [Actix-web](https://actix.rs/)
 - Async runtime: [Tokio](https://tokio.rs/)
 - ORM and migration engine for PostgreSQL: [Diesel](https://diesel.rs/)
