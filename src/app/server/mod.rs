@@ -11,8 +11,7 @@ pub async fn run() -> io::Result<()> {
     dotenv::dotenv().ok();
 
     // Initialize global logger
-    let log_level = dotenv::var("LOG_LEVEL").unwrap();
-    logger::init_global_logger(&log_level);
+    logger::init_global_logger();
 
     // Initialize Postgres connection pool
     let pg_conn_pool = pg::init_conn_pool();

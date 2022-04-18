@@ -8,7 +8,7 @@ pub type DbConnPool = Pool<ConnectionManager<PgConnection>>;
 /// file. Pool size is calculated by taking the product of the number of CPU cores and DB_CONN_POOL_SIZE_PER_CORE.
 /// Meant to be initialized first, and then cloned into each Actix worker.
 pub fn init_conn_pool() -> DbConnPool {
-    let database_uri = dotenv::var("DATABASE_URI").unwrap();
+    let database_uri = dotenv::var("DATABASE_URL").unwrap();
     let conn_manager = ConnectionManager::new(database_uri);
 
     let no_cpu_cores = num_cpus::get() as u32;
