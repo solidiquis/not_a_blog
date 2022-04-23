@@ -1,8 +1,9 @@
+use actix_web::web::Data;
 use diesel::pg::PgConnection;
 use diesel::r2d2::{self, ConnectionManager, Pool};
 use std::time::Duration;
 
-pub type DbConnPool = Pool<ConnectionManager<PgConnection>>;
+pub type DbConnPool = Data<Pool<ConnectionManager<PgConnection>>>;
 
 /// Initializes the connection pool to Postgres. All configurations can be found in the .env
 /// file. Pool size is calculated by taking the product of the number of CPU cores and DB_CONN_POOL_SIZE_PER_CORE.
@@ -20,9 +21,19 @@ pub fn init_conn_pool() -> DbConnPool {
     log::info!("Postgres connection pool size: {:?}", &db_pool_size);
     log::info!("Postgres connection timeout: {:?}", &conn_timeout);
 
-    r2d2::Pool::builder()
+    let db_conn_pool = r2d2::Pool::builder()
         .max_size(db_pool_size)
         .connection_timeout(conn_timeout)
         .build(conn_manager)
-        .unwrap()
+        .unwrap();
+
+    Data::new(db_conn_pool)
+}
+
+/// A module that interfaces user-defined functions Postgres-side.
+pub mod functions {
+    pub fn authenticate_user_via_password(username: &str, raw_password: &str) -> bool {
+        todo!();
+        true
+    }
 }
